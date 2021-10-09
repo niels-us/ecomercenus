@@ -9,8 +9,10 @@ const initialState = {
   autenticado: false,
   token: null,
   usu_nombre: null,
+  usu_direc: null,
   // cargando: false,
   // usu_tipo: null,
+  usu_id:null,
   usu_username: null,
 };
 

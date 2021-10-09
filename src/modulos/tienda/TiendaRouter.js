@@ -6,6 +6,8 @@ import { getCategorias } from "../../redux/actions/categoriaAction";
 import { getCategoriaProductos, getProductos } from "../../redux/actions/productoAction";
 import { getTipoUsuarios } from "../../redux/actions/tipousuarioAction";
 import { getTipoDocumentos } from "../../redux/actions/tipodocumentoAction";
+import { getTipoMonedas } from "../../redux/actions/tipomonedaAction";
+import { getTipoComprobantes } from "../../redux/actions/tipocomprobanteAction";
 
 const TiendaRouter = () => {
 
@@ -18,6 +20,8 @@ const TiendaRouter = () => {
 
   dispatch(getTipoDocumentos())
   dispatch(getTipoUsuarios())
+  dispatch(getTipoMonedas())
+  dispatch(getTipoComprobantes())
   // dispatch(getProductos())
   
 

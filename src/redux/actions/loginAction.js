@@ -47,6 +47,8 @@ export const iniciarSesionAction = (username, clave) => {
           autenticado: true,
           usu_username: payloadJSON.content[0].username,
           usu_nombre: payloadJSON.content[0].nombre,
+          usu_direc:payloadJSON.content[0].direccion,
+          usu_id:payloadJSON.content[0].id,
           // usu_tipo: payloadJSON.content[0].rol_id,
           token: token,
         },
