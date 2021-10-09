@@ -5,10 +5,53 @@ import TiendaHeader from "../../tienda/components/TiendaHeader";
 import { useDispatch, useSelector } from "react-redux";
 import CarritoResumen from "../components/CarritoResumen";
 import ModalBoleta from "../components/ModalBoleta";
+import CarritoTipoComprobante from "./CarritoTipoComprobante";
+import CarritoTipoMoneda from "./CarritoTipoMoneda";
+import Swal from "sweetalert2";
+import { getTipoPago } from "../../../redux/actions/tipopagoAction";
 
 const CarritoTipoPago = () => {
   const dispatch = useDispatch();
   const carrito = useSelector((state) => state.carrito);
+  const { usu_nombre, usu_direc, usu_id } = useSelector((state) => state.login);
+
+  const { tipomonedas } = useSelector((state) => state.tipomoneda);
+  const { tipocomprobantes } = useSelector((state) => state.tipocomprobante);
+
+
+  const [datosTipoPago, setDatos] = useState({
+    tipocomprobante: 0,
+    tipomoneda: 0
+  });
+
+  const handleInputChange = (e) => {
+    setDatos({
+        ...datosTipoPago,
+        [e.target.name]: e.target.value,
+
+    });
+};
+
+const registrarTipoPago = () => {
+  // e.preventDefault();
+  dispatch(getTipoPago(datosTipoPago));
+ 
+};
+
+
+
+  const valor = () => {
+    if (usu_nombre != null) {
+      return true;
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: `Tiene que iniciar sesión`,
+      });
+      return false;
+    }
+  };
 
   const [mostrar, setMostrar] = useState(false);
   return (
@@ -26,7 +69,7 @@ const CarritoTipoPago = () => {
                 <li>Datos Pago:</li>
               </ul>
               <div class="cont post-sidebar">
-                {/* <aside id="secondary" class="s-post page-styling">
+                <aside id="secondary" class="s-post page-styling">
                   <div class="blog-sb-widget">
                     <h3 class="widgettitle">Pago</h3>
                     <div class="section-sb-current">
@@ -36,14 +79,16 @@ const CarritoTipoPago = () => {
                             for="inputText1"
                             class="col-sm-3 col-form-label  text-muted"
                           >
-                            N° Tarjeta
+                            Nombre
                           </label>
                           <div class="col-sm-9">
                             <input
-                              type="number"
+                              type="text"
                               class="form-control"
                               id="inputText1"
-                              name="ntarjeta"
+                              name="nombre"
+                              value={usu_nombre}
+                              readOnly
                               required
                             />
                           </div>
@@ -54,16 +99,61 @@ const CarritoTipoPago = () => {
                             for="inputText2"
                             class="col-sm-3 col-form-label  text-muted"
                           >
-                            CVV
+                            Dirección
                           </label>
                           <div class="col-sm-9">
                             <input
-                              type="number  "
+                              type="text"
                               class="form-control"
                               id="inputText2"
                               name="nombre"
+                              value={usu_direc}
+                              readOnly
                               required
                             />
+                          </div>
+                        </div>
+                        <br />
+                        <div class="form-group row">
+                          <label
+                            for="inputText2"
+                            class="col-sm-3 col-form-label  text-muted"
+                          >
+                            Tipo Comprobante
+                          </label>
+                          <div class="col-sm-9">
+                            <select className="form-select" name="tipocomprobante" onChange={handleInputChange}>
+                              <option selected>Seleccionar..</option>
+                              {tipocomprobantes.map((objtipocomprobante) => {
+                                return (
+                                  <CarritoTipoComprobante
+                                    objtipocomprobante={objtipocomprobante}
+                                  />
+                                );
+                              })}
+                            </select>
+                          </div>
+                        </div>
+                        <br />
+                        {/* AGREGO EL TIPO MONEDA Y TIPO COMPROBANTE */}
+                        <div class="form-group row">
+                          <label
+                            for="inputText2"
+                            class="col-sm-3 col-form-label  text-muted"
+                          >
+                            Tipo Moneda
+                          </label>
+                          <div class="col-sm-9">
+                            <select className="form-select" name="tipomoneda" onChange={handleInputChange} >
+                              <option selected>Seleccionar..</option>
+                              {tipomonedas.map((objtipomoneda) => {
+                                return (
+                                  <CarritoTipoMoneda
+                                    objtipomoneda={objtipomoneda}
+                                  />
+                                );
+                              })}
+                            </select>
                           </div>
                         </div>
                         <br />
@@ -72,11 +162,11 @@ const CarritoTipoPago = () => {
                             for="inputNumber3"
                             class="col-sm-3 col-form-label  text-muted"
                           >
-                            DNI
+                            N° Tarjeta
                           </label>
                           <div class="col-sm-9">
                             <input
-                              type="number"
+                              type="text"
                               class="form-control"
                               id="inputNumber3"
                               name="dni"
@@ -89,31 +179,14 @@ const CarritoTipoPago = () => {
                             for="inputEmail3"
                             class="col-sm-3 col-form-label  text-muted"
                           >
-                            Correo
+                            CVV
                           </label>
                           <div class="col-sm-9">
                             <input
-                              type="email"
+                              type="text"
                               class="form-control"
                               id="inputEmail3"
-                              name="email"
-                            />
-                          </div>
-                        </div>
-                        <br />
-                        <div class="form-group row">
-                          <label
-                            for="inputNumber3"
-                            class="col-sm-3 col-form-label  text-muted"
-                          >
-                            Telefono
-                          </label>
-                          <div class="col-sm-9">
-                            <input
-                              type="number"
-                              class="form-control"
-                              id="inputNumber3"
-                              name="telefono"
+                              name="cvv"
                             />
                           </div>
                         </div>
@@ -121,7 +194,7 @@ const CarritoTipoPago = () => {
                       </form>
                     </div>
                   </div>
-                </aside> */}
+                </aside>
 
                 <aside id="secondary" class="blog-sb blog-sb-widgets">
                   <div class="blog-sb-widget">
@@ -189,7 +262,8 @@ const CarritoTipoPago = () => {
                       <button
                         className="btn"
                         onClick={() => {
-                          setMostrar(true);
+                          setMostrar(valor)
+                          registrarTipoPago()  
                         }}
                       >
                         Pagar

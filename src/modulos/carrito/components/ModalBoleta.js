@@ -1,10 +1,57 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector, state } from "react-redux";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
+import { URL_BACKEND } from "../../../environments/environments";
 
 const ModalBoleta = ({ mostrar, setMostrar }) => {
   const carrito = useSelector((state) => state.carrito);
+  const { usu_nombre, usu_direc, usu_id } = useSelector((state) => state.login);
+  const tipopagos = useSelector((state) => state.tipopago);
+
+
+  const fecharegistro = new Date();
+ 
+
+  let objventa = {
+    serie_comprobante: "0001",
+    numero_comprobante: "1",
+    fecha: fecharegistro,
+    impuesto: 0.18,
+    total: carrito.total,
+    estado: true,
+    moneda_id: tipopagos.tipopagos.tipomoneda,
+    tipo_comprobante_id: tipopagos.tipopagos.tipocomprobante,
+    usuario_id: usu_id,
+  };
+  const postVenta = async (objVenta) => {
+    const response = await fetch(`${URL_BACKEND}/venta`, {
+      method: "POST",
+      body: JSON.stringify(objVenta),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+  };
+
+  const handlePagar = () => {
+    postVenta(objventa)
+    // dispatch(eliminarTodolosproductos(objActual));
+    // cerrar el modal
+    setMostrar(false);
+    // lanzar una notificación de éxito
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito!',
+        text: 'Pedido pagado con éxito'
+        
+    });
+}
+  
+
+
+
+
   return (
     <>
       <Modal size={"lg"} show={mostrar} onHide={() => setMostrar(false)}>
@@ -64,7 +111,7 @@ const ModalBoleta = ({ mostrar, setMostrar }) => {
                 </div>
                 <div className="invoice-content">
                   <div className="table-responsive">
-                    <table className="table table-invoice">
+                    <table className="" style={{border:"1px"}}>
                       <thead>
                         <tr>
                           <th>Descripción</th>
@@ -165,11 +212,13 @@ const ModalBoleta = ({ mostrar, setMostrar }) => {
               </div>
             </div>
           </div>
+
+        
         </Modal.Body>
         <Modal.Footer>
           <button
             className="btn btn-success"
-            // onClick={handlePagar}
+            onClick={handlePagar}
             // disabled={cargandoPago}
           >
             PAGAR

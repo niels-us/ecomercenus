@@ -11,7 +11,12 @@ const LoginLogin = (props) => {
   const { autenticado, usu_nombre } = useSelector((state) => state.login);
 
   if (autenticado) {
-    props.history.push("/tienda/tienda"); 
+    props.history.push("/tienda/tienda");
+    Swal.fire({
+      icon: "success",
+      title: "Éxito!",
+      text: `Bienvenido ${usu_nombre} `,
+    });
   }
 
 
@@ -33,11 +38,7 @@ const LoginLogin = (props) => {
   };
 
   const handleLogin = () => {
-    // Swal.fire({
-    //   icon: "success",
-    //   title: "Éxito!",
-    //   text: `Bienvenido`,
-    // });
+ 
   };
 
   return (
@@ -60,7 +61,7 @@ const LoginLogin = (props) => {
                   <div class="page-styling">
                     <div class="auth-wrap">
                       <div class="auth-col">
-                        <h2>Registro</h2>
+                        <h2>Login</h2>
                         <form
                           className="formulario"
                           onSubmit={handleSubmit}

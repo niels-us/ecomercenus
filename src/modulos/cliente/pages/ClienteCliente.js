@@ -6,13 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { registroClienteAction } from "../../../redux/actions/clienteAction";
 import ClienteTipousuario from "../components/ClienteTipousuario";
 import ClienteTipodocumento from "../components/ClienteTipodocumento";
+import { NavLink } from "react-router-dom";
 
-const ClienteCliente = () => {
+const ClienteCliente = (props) => {
   const dispatch = useDispatch();
   const { registrado, cargando } = useSelector((state) => state.cliente);
   const { tipousuarios } = useSelector((state) => state.tipousuario);
   const { tipodocumentos } = useSelector((state) => state.tipodocumento);
-
 
   const [formulario, setFormulario] = useState({
     // username: formulario.username,
@@ -45,9 +45,18 @@ const ClienteCliente = () => {
 
   const handleCliente = () => {
     Swal.fire({
-      icon: "success",
-      title: "Éxito!",
-      text: "Gracias por regisrarse",
+      title: "Desea iniciar sesión?",
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: "SI",
+      denyButtonText: `NO`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        props.history.push("/Login/Login"); 
+      }else{
+        props.history.push("/Tienda/Tienda"); 
+      }
     });
   };
 
@@ -89,15 +98,19 @@ const ClienteCliente = () => {
                                 Tipo Persona <span class="required">*</span>
                               </label>
                               <select
+                                className="form-select"
                                 value={formulario.tipo_usuario_id}
                                 onChange={handleChange}
                                 name="tipo_usuario_id"
                               >
                                 <option selected>Seleccionar..</option>
-                                {tipousuarios.map((objtipousuario)=>{
-                                    return <ClienteTipousuario objtipousuario={objtipousuario}/>
+                                {tipousuarios.map((objtipousuario) => {
+                                  return (
+                                    <ClienteTipousuario
+                                      objtipousuario={objtipousuario}
+                                    />
+                                  );
                                 })}
-                          
                               </select>
                             </p>
                             <p>
@@ -105,15 +118,19 @@ const ClienteCliente = () => {
                                 Tipo Documento <span class="required">*</span>
                               </label>
                               <select
+                                className="form-select"
                                 value={formulario.tipo_documento_id}
                                 onChange={handleChange}
                                 name="tipo_documento_id"
                               >
                                 <option selected>Seleccionar..</option>
-                                {tipodocumentos.map((objtipodocumento)=>{
-                                    return <ClienteTipodocumento objtipodocumento={objtipodocumento}/>
+                                {tipodocumentos.map((objtipodocumento) => {
+                                  return (
+                                    <ClienteTipodocumento
+                                      objtipodocumento={objtipodocumento}
+                                    />
+                                  );
                                 })}
-                                
                               </select>
                             </p>
                             <p>

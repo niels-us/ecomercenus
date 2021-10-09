@@ -8,6 +8,9 @@ import { productoReducer } from '../reducers/productoReducer';
 import { tipodocumentoReducer } from '../reducers/tipodocumentoReducer';
 import { tipousuarioReducer } from '../reducers/tipousuarioReducer';
 import { favoritoReducer } from '../reducers/favoritoReducer';
+import { tipomonedaReducer } from '../reducers/tipomonedaReducer';
+import { tipopagoReducer } from '../reducers/tipopagoReducer';
+import { tipocomprobantesReducer } from '../reducers/tipocomprobanteReducer';
 
 const composeEnhancers =
 	(typeof window !== 'undefined' &&
@@ -23,6 +26,9 @@ const reducers = combineReducers({
 	tipousuario:tipousuarioReducer,
 	tipodocumento:tipodocumentoReducer,
 	favorito:favoritoReducer,
+	tipocomprobante:tipocomprobantesReducer,
+	tipomoneda:tipomonedaReducer,
+	tipopago:tipopagoReducer,
 	
 });
 
