@@ -1,9 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { agregarProductoAlCarrito } from "../../../redux/actions/carritoAction";
-import { agregarProductoAlfavorito } from "../../../redux/actions/favoritoAction";
 import {
   restarProductoAlCarrito,
   sumarProductoAlCarrito,
@@ -30,10 +28,6 @@ const TiendaModalProducto = ({ mostrar, setMostrar, objproducto }) => {
     if (objcarrito) {
       dispatch(sumarProductoAlCarrito(objcarrito));
     }
-  };
-
-  const agregarFavorito = () => {
-    dispatch(agregarProductoAlfavorito(objproducto));
   };
 
   return (
@@ -118,23 +112,15 @@ const TiendaModalProducto = ({ mostrar, setMostrar, objproducto }) => {
                         ></i>
                       </a>
                     </p>
-                    <div class="prod-li-favorites">
-                      <NavLink to="#" className="hover-label add_to_wishlist">
-                      {/* <NavLink to="#" className="hover-label prod-addbtn"> */}
-                        <i
-                          className="icon ion-heart"
-                          onClick={agregarFavorito}
-                        ></i>
-                        <span>Add to Wishlist</span>
-                      </NavLink>
-                      {/* <a
+                    {/* <div class="prod-li-favorites">
+                      <a
                         href="wishlist.html"
                         class="hover-label add_to_wishlist"
                       >
                         <i class="icon ion-heart"></i>
                         <span>Add to Wishlist</span>
-                      </a> */}
-                    </div>
+                      </a>
+                    </div> */}
                   </div>
                 </div>
               </div>

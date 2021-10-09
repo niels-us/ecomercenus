@@ -9,11 +9,12 @@ import CarritoProductos from "../components/CarritoProductos";
 const CarritoCarrito = () => {
 
   const carrito = useSelector((state) => state.carrito);
-console.log(carrito)
+  const { categorias } = useSelector((state) => state.categoria);
 
   return (
     <div id="page" className="site">
-      <TiendaHeader />
+
+      <TiendaHeader categorias={categorias} />
 
       <div id="content" class="site-content">
         <div id="primary" class="content-area width-normal">
@@ -28,17 +29,17 @@ console.log(carrito)
               </ul>
               <div class="page-styling">
                 <div class="woocommerce prod-litems section-list">
-                 
-                {
-                carrito.productos.map((objproducto) => {
-                 
-                  return <CarritoProductos objproducto={objproducto} />
-                  
 
-                })
+                  {
+                    carrito.productos.map((objproducto) => {
+
+                      return <CarritoProductos objproducto={objproducto} />
 
 
-              }
+                    })
+
+
+                  }
 
                 </div>
 

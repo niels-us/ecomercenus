@@ -14,7 +14,7 @@ import './css/jquery.fancybox.css';
 import './css/jquery.formstyler.css';
 import './css/jquery.mThumbnailScroller.css';
 import './css/media.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import './css/ion.rangeSlider.css';
 
 
 ReactDOM.render(<App />, document.getElementById("root"));

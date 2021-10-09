@@ -1,6 +1,8 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { eliminarProductoAlCarrito, restarProductoAlCarrito, sumarProductoAlCarrito } from "../../../redux/actions/carritoAction";
+import { agregarProductoAlfavorito } from "../../../redux/actions/favoritoAction";
 
 const CarritoProductos = ({ objproducto }) => {
 
@@ -13,6 +15,10 @@ const CarritoProductos = ({ objproducto }) => {
   };
   const sumarProducto = () => {
     dispatch(sumarProductoAlCarrito(objproducto));
+  };
+
+  const agregarFavorito = () => {
+    dispatch(agregarProductoAlfavorito(objproducto));
   };
 
   return (
@@ -40,7 +46,7 @@ const CarritoProductos = ({ objproducto }) => {
               <div class="prod-li-qnt-wrap">
                 <p class="qnt-wrap prod-li-qnt">
                   <a href="#" class="qnt-plus prod-li-plus">
-                    <i class="icon ion-arrow-up-b"onClick={sumarProducto}></i>
+                    <i class="icon ion-arrow-up-b" onClick={sumarProducto}></i>
                   </a>
                   <input type="text" value={objproducto.cantidad} />
                   <a href="#" class="qnt-minus prod-li-minus">
@@ -53,7 +59,7 @@ const CarritoProductos = ({ objproducto }) => {
                 <p class="prod-li-total">S/.{objproducto.cantidad * objproducto.precio_venta}</p>
               </div>
             </div>
-          </div>     
+          </div>
           <div class="prod-li-info">
             <div class="prod-li-rating-wrap">
               <p data-rating="2" class="prod-li-rating">
@@ -71,12 +77,12 @@ const CarritoProductos = ({ objproducto }) => {
                 <span>Remove</span>
               </a>
             </p>
-            <p class="prod-li-compare">
+            {/* <p class="prod-li-compare">
               <a href="compare.html" class="hover-label prod-li-compare-btn">
                 <span>Compare</span>
                 <i class="icon ion-arrow-swap"></i>
               </a>
-            </p>
+            </p> */}
             <p class="prod-quickview">
               <a href="#" class="hover-label quick-view">
                 <i class="icon ion-plus"></i>
@@ -84,10 +90,18 @@ const CarritoProductos = ({ objproducto }) => {
               </a>
             </p>
             <div class="prod-li-favorites">
-              <a href="wishlist.html" class="hover-label add_to_wishlist">
+              <NavLink to="#" className="hover-label add_to_wishlist">
+                {/* <NavLink to="#" className="hover-label prod-addbtn"> */}
+                <i
+                  className="icon ion-heart"
+                  onClick={agregarFavorito}
+                ></i>
+                <span>Add to Wishlist</span>
+              </NavLink>
+              {/* <a href="wishlist.html" class="hover-label add_to_wishlist">
                 <i class="icon ion-heart"></i>
                 <span>Add to Wishlist</span>
-              </a>
+              </a> */}
             </div>
             <p class="prod-li-information">
               <a href="#" class="hover-label">

@@ -29,7 +29,7 @@ const Productover = ({objproducto}) => {
                     <span>Add to Cart</span>
                   </a>
                 </p>
-                <p class="prod-li-compare">
+                {/* <p class="prod-li-compare">
                   <a
                     href="compare.html"
                     class="hover-label prod-li-compare-btn"
@@ -37,7 +37,7 @@ const Productover = ({objproducto}) => {
                     <span>Compare</span>
                     <i class="icon ion-arrow-swap"></i>
                   </a>
-                </p>
+                </p> */}
               </div>
             </div>
           </div>

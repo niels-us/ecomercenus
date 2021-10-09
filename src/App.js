@@ -12,6 +12,7 @@ import CarritoRouter from "./modulos/carrito/CarritoRouter";
 import ClienteRouter from "./modulos/cliente/ClienteRouter";
 import LoginRouter from "./modulos/login/LoginRouter";
 import ProductoRouter from "./modulos/productos/ProductoRouter";
+import FavoritoRouter from "./modulos/favoritos/FavoritoRouter";
 const App = () => {
   
   return (
@@ -24,7 +25,7 @@ const App = () => {
             <Route path="/Cliente" component={ClienteRouter} />
             <Route path="/Login" component={LoginRouter} />
             <Route path="/Producto" component={ProductoRouter} />
-
+            <Route path="/favorito" component={FavoritoRouter} />
             <Redirect to="/tienda/tienda" />
           </Switch>
         </Router>

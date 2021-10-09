@@ -7,6 +7,7 @@ import { loginReducer } from '../reducers/loginReducer';
 import { productoReducer } from '../reducers/productoReducer';
 import { tipodocumentoReducer } from '../reducers/tipodocumentoReducer';
 import { tipousuarioReducer } from '../reducers/tipousuarioReducer';
+import { favoritoReducer } from '../reducers/favoritoReducer';
 
 const composeEnhancers =
 	(typeof window !== 'undefined' &&
@@ -21,7 +22,7 @@ const reducers = combineReducers({
 	cliente:clienteReducer,
 	tipousuario:tipousuarioReducer,
 	tipodocumento:tipodocumentoReducer,
-	
+	favorito:favoritoReducer,
 	
 });
 

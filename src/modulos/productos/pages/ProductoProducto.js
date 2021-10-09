@@ -5,9 +5,11 @@ import { useSelector } from "react-redux";
 import Productover from "../components/Productover";
 const ProductoProducto = () => {
   const { productos } = useSelector((state) => state.producto);
+  const { categorias } = useSelector((state) => state.categoria);
+  
   return (
     <>
-    <TiendaHeader/>
+    <TiendaHeader categorias={categorias} />
       <div id="content" class="site-content">
         <div id="primary" class="content-area">
           <main id="main" class="site-main">
@@ -22,11 +24,6 @@ const ProductoProducto = () => {
                 <li>Product</li>
               </ul>{" "}
               <article>
-
-
-
-
-
                 <h2 class="prod-related-ttl">You may also like…</h2>
                 <div class="row prod-items prod-items-4">
 
