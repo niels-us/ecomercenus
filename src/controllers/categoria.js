@@ -13,7 +13,10 @@ const getCategoriaId = async (req, res) => {
   const response = await pool.query(
     
     // "select * from tienda_categoria where id=$1",
-    "SELECT * FROM tienda_categoria INNER JOIN tienda_producto ON tienda_categoria.id=tienda_producto.categoria_id where tienda_categoria.id=$1",
+    // "SELECT * FROM tienda_categoria INNER JOIN tienda_producto ON tienda_categoria.id=tienda_producto.categoria_id where tienda_categoria.id=$1",
+    // "select p.*,c.id as categoria_id,c.nombre as categoria_nombre from tienda_producto p inner join tienda_categoria c on p.categoria_id = c.id where p.categoria_id=$1",
+    "select p.*,c.nombre as cat_nom, c.descripcion as cat_des from tienda_producto p inner join tienda_categoria c on p.categoria_id = c.id where p.categoria_id=$1",
+    
     [id]
   );  
   res.status(201).json({

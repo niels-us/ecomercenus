@@ -13,6 +13,10 @@ app.use(require('./routes/categoria'))
 app.use(require('./routes/producto'))
 app.use(require('./routes/venta'))
 app.use(require('./routes/detalleventa'))
+app.use(require('./routes/tipodocumento'))
+app.use(require('./routes/tipousuario'))
+app.use(require('./routes/tipocomprobante'))
+app.use(require('./routes/tipomoneda'))
 
 
 app.listen(5000)

@@ -1,4 +1,27 @@
-const {pool} =require('../databases/conexion')
+const { pool } = require('../databases/conexion')
+const jwt = require("jsonwebtoken");
+
+const getLogin = async (req, res) => {
+  const { username, clave } = req.body;
+
+  const response = await pool.query(
+    "select * from tienda_usuario where username=$1 and clave=$2",
+    [username, clave]
+  );
+
+  if (response.rowCount > 0) {
+    const payload = { content: response.rows };
+
+    const token = jwt.sign(payload, 'key_secret');
+    res.status(200).json({
+      mensaje: "Autenticación correcta",
+      token: token,
+      content: response.rows
+    });
+  } else {
+    res.status(400).json({ mensaje: "Usuario o contraseña incorrectos" });
+  }
+};
 
 const getUsuario = async (req, res) => {
   const response = await pool.query("select * from tienda_usuario");
@@ -113,4 +136,5 @@ module.exports = {
   getUsuarioId,
   deleteUsuario,
   updateUsuario,
+  getLogin
 }
