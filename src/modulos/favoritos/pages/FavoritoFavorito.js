@@ -5,11 +5,9 @@ import TiendaFooter from "../../tienda/components/TiendaFooter";
 import TiendaHeader from "../../tienda/components/TiendaHeader";
 import FavoritoProductos from "../componentes/FavoritoProductos";
 
-
 const FavoritoFavorito = () => {
 
     const favorito = useSelector((state) => state.favorito);
-    console.log(favorito)
 
     return (
         <div id="page" className="site">

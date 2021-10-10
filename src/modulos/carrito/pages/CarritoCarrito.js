@@ -6,7 +6,7 @@ import TiendaHeader from "../../tienda/components/TiendaHeader";
 import CarritoProductos from "../components/CarritoProductos";
 
 
-const CarritoCarrito = () => {
+const CarritoCarrito = (props) => {
 
   const carrito = useSelector((state) => state.carrito);
   const { categorias } = useSelector((state) => state.categoria);

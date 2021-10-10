@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import TiendaTienda from "./pages/TiendaTienda";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,16 +14,20 @@ const TiendaRouter = () => {
   const { categorias } = useSelector((state) => state.categoria);
 
   const dispatch = useDispatch();
-  if (categorias.length == 0) {
+  
+  // if (categorias.length == 0) {
+  // dispatch(getCategoriaProductos())
+  // }
+
+  useEffect(() => {
     dispatch(getCategoriaProductos())
-  } 
+  }, []);
 
   dispatch(getTipoDocumentos())
   dispatch(getTipoUsuarios())
   dispatch(getTipoMonedas())
   dispatch(getTipoComprobantes())
-  // dispatch(getProductos())
-  
+
 
   return (
     <>

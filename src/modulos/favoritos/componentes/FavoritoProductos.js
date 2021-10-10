@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import Swal from "sweetalert2";
+import { NavLink, useHistory  } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import TiendaModalProducto from "./TiendaModalProducto";
 import { agregarProductoAlCarrito } from "../../../redux/actions/carritoAction";
 import { eliminarProductoAlFavorito, restarProductoAlFavorito, sumarProductoAlFavorito } from "../../../redux/actions/favoritoAction";
 
 const FavoritoProductos = ({ objproducto }) => {
+
+    let history = useHistory();
 
     const [mostrar, setMostrar] = useState(false);
 
@@ -16,14 +19,19 @@ const FavoritoProductos = ({ objproducto }) => {
 
     const agregarProducto = () => {
         dispatch(agregarProductoAlCarrito(objproducto));
+        Swal.fire({
+            title: "Se agregó al Carrito, Deseas ir al Carrito?",
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: "SI",
+            denyButtonText: `NO`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                history.push("/Carrito/Carrito");
+            }
+        });
     };
-
-    // const restarProducto = () => {
-    //     dispatch(restarProductoAlFavorito(objproducto));
-    // };
-    // const sumarProducto = () => {
-    //     dispatch(sumarProductoAlFavorito(objproducto));
-    // };
 
     return (
         <>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "./../../../assets/img/logo.png";
 import { useSelector } from "react-redux";
@@ -7,12 +7,15 @@ import { useDispatch } from "react-redux";
 import { cerrarSesionAction } from "../../../redux/actions/loginAction";
 import { getCategoriaProductos, getProductos } from "../../../redux/actions/productoAction";
 import { getCategorias } from "../../../redux/actions/categoriaAction";
+import { filtroProductos } from "../../../redux/actions/productoAction";
 
-const TiendaHeader = ({categorias}) => {
+
+const TiendaHeader = ({ categorias }) => {
   const { favorito } = useSelector((state) => state);
   const { carrito } = useSelector((state) => state);
+  const { producto } = useSelector((state) => state);
   const { usu_nombre, usu_username } = useSelector((state) => state.login);
-  
+
   const dispatch = useDispatch();
 
   const handleCategoria = (id) => {
@@ -30,6 +33,20 @@ const TiendaHeader = ({categorias}) => {
   const cerrarSesion = () => {
     dispatch(cerrarSesionAction());
   };
+
+  const [formulario, setFormulario] = useState({});
+
+  const handleChange = (e) => {
+    setFormulario({
+      ...formulario,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(filtroProductos(formulario.nombre));
+  }
 
   return (
     <>
@@ -132,8 +149,14 @@ const TiendaHeader = ({categorias}) => {
           </p>
           <div className="h-shop">
             <form method="get" action="#" className="h-search" id="h-search">
-              <input type="text" placeholder="Search..." />
-              <button type="submit">
+              <input
+                type="text"
+                name="nombre"
+                value={formulario.nombre}
+                onChange={handleChange}
+                placeholder="Search..."
+              />
+              <button type="submit" onClick={handleSubmit}>
                 <i className="ion-search"></i>
               </button>
             </form>
@@ -253,7 +276,7 @@ const TiendaHeader = ({categorias}) => {
                             </NavLink>
                           </li>
                         );
-                      }): null}
+                      }) : null}
                     <li>
                       <NavLink
                         // className="dropdown-item"

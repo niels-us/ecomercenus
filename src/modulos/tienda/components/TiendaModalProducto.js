@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import Swal from "sweetalert2";
+import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { agregarProductoAlCarrito } from "../../../redux/actions/carritoAction";
 import { agregarProductoAlfavorito } from "../../../redux/actions/favoritoAction";
@@ -10,6 +11,9 @@ import {
 } from "../../../redux/actions/carritoAction";
 
 const TiendaModalProducto = ({ mostrar, setMostrar, objproducto }) => {
+  
+  let history = useHistory();
+
   const carrito = useSelector((state) => state.carrito);
 
   let objcarrito;
@@ -20,6 +24,18 @@ const TiendaModalProducto = ({ mostrar, setMostrar, objproducto }) => {
   const dispatch = useDispatch();
   const agregarProducto = () => {
     dispatch(agregarProductoAlCarrito(objproducto));
+    Swal.fire({
+      title: "Se agrego al Carrito, Deseas ir al Carrito?",
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: "SI",
+      denyButtonText: `NO`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        history.push("/Carrito/Carrito");
+      }
+    });
   };
   const restarProducto = () => {
     if (objcarrito) {
@@ -34,6 +50,18 @@ const TiendaModalProducto = ({ mostrar, setMostrar, objproducto }) => {
 
   const agregarFavorito = () => {
     dispatch(agregarProductoAlfavorito(objproducto));
+    Swal.fire({
+      title: "Se agrego a Favoritos, Deseas ir a Favoritos?",
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: "SI",
+      denyButtonText: `NO`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        history.push("/favorito/favorito");
+      }
+    });
   };
 
   return (
@@ -119,8 +147,8 @@ const TiendaModalProducto = ({ mostrar, setMostrar, objproducto }) => {
                       </a>
                     </p>
                     <div class="prod-li-favorites">
-                      <NavLink to="#" className="hover-label add_to_wishlist">
-                      {/* <NavLink to="#" className="hover-label prod-addbtn"> */}
+                      <NavLink to="#" className="hover-label prod-addbtn">
+                        {/* <NavLink to="#" className="hover-label add_to_wishlist"> */}
                         <i
                           className="icon ion-heart"
                           onClick={agregarFavorito}

@@ -13,8 +13,8 @@ import ClienteRouter from "./modulos/cliente/ClienteRouter";
 import LoginRouter from "./modulos/login/LoginRouter";
 import ProductoRouter from "./modulos/productos/ProductoRouter";
 import FavoritoRouter from "./modulos/favoritos/FavoritoRouter";
-const App = () => {
-  
+const App = () => {  
+
   return (
     <>
       <Provider store={store}>

@@ -1,5 +1,6 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import Swal from "sweetalert2";
+import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { eliminarProductoAlCarrito, restarProductoAlCarrito, sumarProductoAlCarrito } from "../../../redux/actions/carritoAction";
 import { agregarProductoAlfavorito } from "../../../redux/actions/favoritoAction";
@@ -17,8 +18,23 @@ const CarritoProductos = ({ objproducto }) => {
     dispatch(sumarProductoAlCarrito(objproducto));
   };
 
+  let history = useHistory();
   const agregarFavorito = () => {
+    console.log('agregarFavorito');
     dispatch(agregarProductoAlfavorito(objproducto));
+
+    Swal.fire({
+      title: "Se agrego a Favoritos, Deseas ir a Favoritos?",
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: "SI",
+      denyButtonText: `NO`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        history.push("/favorito/favorito");
+      }
+    });
   };
 
   return (
