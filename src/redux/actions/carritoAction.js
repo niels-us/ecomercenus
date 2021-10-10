@@ -1,4 +1,4 @@
-import { AGREGAR_CARRITO, ELIMINAR_CARRITO, RESTAR_CARRITO, SUMAR_CARRITO } from "../types/types"
+import { AGREGAR_CARRITO, ELIMINAR_CARRITO, ELIMINAR_TODO_CARRITO, RESTAR_CARRITO, SUMAR_CARRITO } from "../types/types"
 
 
 
@@ -35,5 +35,12 @@ export const restarProductoAlCarrito = (objproducto) => {
 		payload: {
 			objproducto: objproducto
 		}
+	};
+};
+
+export const eliminarTodolosproductos = (objProducto) => {
+	return {
+		type: ELIMINAR_TODO_CARRITO,
+		payload: objProducto
 	};
 };

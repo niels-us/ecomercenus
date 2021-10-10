@@ -1,56 +1,116 @@
 import React from "react";
-import { Modal } from "react-bootstrap";
+import axios from "axios";
+import { Modal, NavLink } from "react-bootstrap";
 import { useDispatch, useSelector, state } from "react-redux";
 import Swal from "sweetalert2";
 import { URL_BACKEND } from "../../../environments/environments";
+import { eliminarTodolosproductos } from "../../../redux/actions/carritoAction";
 
 const ModalBoleta = ({ mostrar, setMostrar }) => {
+  const dispatch = useDispatch();
   const carrito = useSelector((state) => state.carrito);
-  const { usu_nombre, usu_direc, usu_id } = useSelector((state) => state.login);
+  const { usu_id } = useSelector((state) => state.login);
   const tipopagos = useSelector((state) => state.tipopago);
 
-
   const fecharegistro = new Date();
- 
+  // 1 - boleta
+  // 2 - Factura
 
+  //consultar el nombre del documento
+  // const evaluarNombreComp = async () => {
+  //   const endpoint = `${URL_BACKEND}/nombrecomprobante/${tipopagos.tipopagos.tipocomprobante}`;
+  //   const nombreComprob = await axios.get(endpoint);
+  //   const resultado= nombreComprob.data.content[0].nombre
+  //   return resultado
+  // };
+  // console.log(evaluarNombreComp());
+
+  const valorImpuesto = () => {
+    // const endpoint = `${URL_BACKEND}/nombrecomprobante/${tipopagos.tipopagos.tipocomprobante}`;
+    // const nombreComprob = await axios.get(endpoint);
+    // const resultado= nombreComprob.data.content[0].nombre
+    // console.log(resultado)
+    if (tipopagos.tipopagos.tipocomprobante === "1") {
+      return 0;
+    } else {
+      return parseFloat(carrito.total - carrito.total / 1.18).toFixed(3);
+      // parseFloat(num.toFixed(3)
+    }
+  };
+  console.log(valorImpuesto);
   let objventa = {
     serie_comprobante: "0001",
     numero_comprobante: "1",
     fecha: fecharegistro,
-    impuesto: 0.18,
+    impuesto: valorImpuesto(),
     total: carrito.total,
     estado: true,
     moneda_id: tipopagos.tipopagos.tipomoneda,
     tipo_comprobante_id: tipopagos.tipopagos.tipocomprobante,
     usuario_id: usu_id,
   };
+
   const postVenta = async (objVenta) => {
-    const response = await fetch(`${URL_BACKEND}/venta`, {
+    const response1 = await fetch(`${URL_BACKEND}/venta`, {
       method: "POST",
       body: JSON.stringify(objVenta),
       headers: {
         "Content-type": "application/json",
       },
     });
+
+    const endpoint = `${URL_BACKEND}/ventamax`;
+    const response2 = await axios.get(endpoint);
+    console.log(response2.data.content[0].idventa);
+
+    const objventasdetalle = carrito.productos.map((obj) => {
+      return obj;
+    });
+
+    for (let i in objventasdetalle) {
+      const objventi = {
+        cantidad: objventasdetalle[i].cantidad,
+        precio: objventasdetalle[i].precio_venta,
+        descuento: 0,
+        producto_id: objventasdetalle[i].id,
+        ventas_id: response2.data.content[0].idventa,
+      };
+      const response3 = await fetch(`${URL_BACKEND}/detalleventa`, {
+        method: "POST",
+        body: JSON.stringify(objventi),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+    }
   };
 
+  let objActual = carrito.productos.map((data) => {
+    return data;
+  });
+
+  console.log(objActual.length);
+
   const handlePagar = () => {
-    postVenta(objventa)
-    // dispatch(eliminarTodolosproductos(objActual));
-    // cerrar el modal
-    setMostrar(false);
-    // lanzar una notificación de éxito
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito!',
-        text: 'Pedido pagado con éxito'
-        
-    });
-}
-  
-
-
-
+    if (objActual.length > 0) {
+      postVenta(objventa);
+      dispatch(eliminarTodolosproductos(objActual));
+      // cerrar el modal
+      setMostrar(false);
+      // lanzar una notificación de éxito
+      Swal.fire({
+        icon: "success",
+        title: "Éxito!",
+        text: "Pedido pagado con éxito",
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Agregar un producto al carrito",
+      });
+    }
+  };
 
   return (
     <>
@@ -111,7 +171,7 @@ const ModalBoleta = ({ mostrar, setMostrar }) => {
                 </div>
                 <div className="invoice-content">
                   <div className="table-responsive">
-                    <table className="" style={{border:"1px"}}>
+                    <table className="" style={{ border: "1px" }}>
                       <thead>
                         <tr>
                           <th>Descripción</th>
@@ -212,8 +272,6 @@ const ModalBoleta = ({ mostrar, setMostrar }) => {
               </div>
             </div>
           </div>
-
-        
         </Modal.Body>
         <Modal.Footer>
           <button

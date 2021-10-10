@@ -5,14 +5,27 @@ import { useSelector } from "react-redux";
 import TiendaVistaProducto from "./TiendaVistaProducto";
 import { useDispatch } from "react-redux";
 import { cerrarSesionAction } from "../../../redux/actions/loginAction";
-import { getCategoriaProductos, getProductos } from "../../../redux/actions/productoAction";
+import {
+  getCategoriaProductos,
+  getProductos,
+} from "../../../redux/actions/productoAction";
 import { getCategorias } from "../../../redux/actions/categoriaAction";
+import Swal from "sweetalert2";
 
-const TiendaHeader = ({categorias}) => {
+const TiendaHeader = ({ categorias }) => {
   const { favorito } = useSelector((state) => state);
   const { carrito } = useSelector((state) => state);
-  const { usu_nombre, usu_username } = useSelector((state) => state.login);
-  
+  const { usu_username } = useSelector((state) => state.login);
+
+  const texto = () => {
+    if (usu_username != null) {
+      return <NavLink to="/Tienda/Tienda" onClick={cerrarSesion}>Cerrar Sesión</NavLink>;
+      
+    } else {
+      return <NavLink to="/Login/Login">Iniciar Sesión</NavLink>;
+    }
+  };
+
   const dispatch = useDispatch();
 
   const handleCategoria = (id) => {
@@ -24,11 +37,20 @@ const TiendaHeader = ({categorias}) => {
   };
 
   const handleGetCategoriaProducto = () => {
-    dispatch(getCategoriaProductos())
+    dispatch(getCategoriaProductos());
   };
 
   const cerrarSesion = () => {
     dispatch(cerrarSesionAction());
+    if (usu_username != null) {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Cerrando sesión",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   return (
@@ -40,7 +62,11 @@ const TiendaHeader = ({categorias}) => {
               <ul className="links_list links_list-align-left align-center-desktop topbar-social">
                 <li>
                   <p className="links_list-value">
-                    <a href="http://facebook.com" target="_blank" rel="nofollow">
+                    <a
+                      href="http://facebook.com"
+                      target="_blank"
+                      rel="nofollow"
+                    >
                       <i className="fa fa-facebook"></i>
                     </a>
                   </p>
@@ -58,7 +84,11 @@ const TiendaHeader = ({categorias}) => {
                 </li>
                 <li>
                   <p className="links_list-value">
-                    <a href="http://pinterest.com" target="_blank" rel="nofollow">
+                    <a
+                      href="http://pinterest.com"
+                      target="_blank"
+                      rel="nofollow"
+                    >
                       <i className="fa fa-pinterest-p"></i>
                     </a>
                   </p>
@@ -86,7 +116,11 @@ const TiendaHeader = ({categorias}) => {
                 </li>
                 <li>
                   <p className="links_list-value">
-                    <a href="http://instagram.com" target="_blank" rel="nofollow">
+                    <a
+                      href="http://instagram.com"
+                      target="_blank"
+                      rel="nofollow"
+                    >
                       <i className="fa fa-instagram"></i>
                     </a>
                   </p>
@@ -192,7 +226,9 @@ const TiendaHeader = ({categorias}) => {
                   <div className="widget_shopping_cart_content">
                     <ul className="cart_list">
                       {carrito.productos.map((objproducto) => {
-                        return <TiendaVistaProducto objproducto={objproducto} />;
+                        return (
+                          <TiendaVistaProducto objproducto={objproducto} />
+                        );
                       })}
                     </ul>
                     <p className="total">
@@ -240,20 +276,21 @@ const TiendaHeader = ({categorias}) => {
                   <ul className="sub-menu">
                     {categorias
                       ? categorias.map((objCategoria) => {
-                        return (
-                          <li key={objCategoria.id}>
-                            <NavLink
-                              // className="dropdown-item"
-                              to="#"
-                              onClick={() => {
-                                handleCategoria(objCategoria.id);
-                              }}
-                            >
-                              {objCategoria.nombre}
-                            </NavLink>
-                          </li>
-                        );
-                      }): null}
+                          return (
+                            <li key={objCategoria.id}>
+                              <NavLink
+                                // className="dropdown-item"
+                                to="#"
+                                onClick={() => {
+                                  handleCategoria(objCategoria.id);
+                                }}
+                              >
+                                {objCategoria.nombre}
+                              </NavLink>
+                            </li>
+                          );
+                        })
+                      : null}
                     <li>
                       <NavLink
                         // className="dropdown-item"
@@ -301,9 +338,9 @@ const TiendaHeader = ({categorias}) => {
 
                   <ul className="sub-menu">
                     <li className="menu-item-has">
-                      <a href="#" onClick={cerrarSesion}>
-                        Cerrar sesión
-                      </a>
+                      {/* <a href="#" onClick={cerrarSesion}>{texto()}</a>
+                      <Link to="/Login/Login">{texto()}</Link> */}
+                      {texto()}
                     </li>
                   </ul>
                 </li>
